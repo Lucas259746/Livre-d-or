@@ -61,3 +61,26 @@ function db_last_insert_id() {
     return $pdo->lastInsertId();
 }
 
+/**
+ * Commence une transaction
+ */
+function db_begin_transaction() {
+    $pdo = db_connect();
+    return $pdo->beginTransaction();
+}
+
+/**
+ * Valide une transaction
+ */
+function db_commit() {
+    $pdo = db_connect();
+    return $pdo->commit();
+}
+
+/**
+ * Annule une transaction
+ */
+function db_rollback() {
+    $pdo = db_connect();
+    return $pdo->rollBack();
+} 
