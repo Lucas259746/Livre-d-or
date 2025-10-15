@@ -8,6 +8,14 @@ function get_user_by_email($email) {
     $query = "SELECT * FROM users WHERE email = ? LIMIT 1";
     return db_select_one($query, [$email]);
 }
+/**
+ * Récupère l'email d'un utilisateur par son ID
+ */
+function get_email_of_user($id) {
+    $query = "SELECT email FROM users WHERE id = ? LIMIT 1";
+    $result = db_select_one($query, [$id]);
+    return $result['email'] ?? null;
+}
 
 /**
  * Récupère un utilisateur par son ID
@@ -35,7 +43,7 @@ function create_user($first_name, $last_name, $email, $password) {
  * Met à jour un utilisateur
  */
 function update_user($id, $first_name, $last_name, $email) {
-    $query = "UPDATE users SET first_name last_name = ?, email = ?, updated_at = NOW() WHERE id = ?";
+    $query = "UPDATE users SET first_name = ?, last_name = ?, email = ?, updated_at = NOW() WHERE id = ?";
     return db_execute($query, [$first_name, $last_name, $email, $id]);
 }
 
@@ -153,3 +161,4 @@ function check_and_logout_if_session_expired() {
         $_SESSION['last_activity'] = time(); // time() https://www.php.net/time
     }
 }
+

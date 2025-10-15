@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+                        <label for="password">mot de passe</label>
                         <input type="password" id="password" name="password">
                         <small class="muted">
                             Au moins 8 caractères, 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spécial.

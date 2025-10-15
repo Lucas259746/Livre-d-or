@@ -24,13 +24,13 @@
                 <li><a href="<?php echo url(); ?>">Accueil</a></li>
                 <li><a href="<?php echo url('home/about'); ?>">À propos</a></li>
                 <li><a href="<?php echo url('home/contact'); ?>">Contact</a></li>
+                <li><a href="<?php echo url('home/avis'); ?>">Avis</a></li>
                 <?php if (is_logged_in()): ?>
                     <li><a href="<?php echo url('home/profile'); ?>">profile</a></li>
                     <li><a href="<?php echo url('auth/logout'); ?>">Déconnexion</a></li>
                 <?php else: ?>
                     <li><a href="<?php echo url('auth/login'); ?>">Connexion</a></li>
                     <li><a href="<?php echo url('auth/register'); ?>">Inscription</a></li>
-                    <li><a href="<?php echo url('auth/forgot-password2'); ?>">Mot de passe oublié</a></li>
                 <?php endif; ?>
             </ul>
         </nav>

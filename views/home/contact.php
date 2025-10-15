@@ -14,21 +14,10 @@
                 <form method="POST" class="contact-form">
                     <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
                     
-                    <div class="form-group">
-                        <label for="name">Nom complet</label>
-                        <input type="text" id="name" name="name" required 
-                               value="<?php echo escape(post('name', '')); ?>">
-                    </div>
                     
                     <div class="form-group">
-                        <label for="email">Adresse email</label>
-                        <input type="email" id="email" name="email" required 
-                               value="<?php echo escape(post('email', '')); ?>">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" rows="6" required><?php echo escape(post('message', '')); ?></textarea>
+                        <label for="messages">Message</label>
+                        <textarea id="messages" name="messages" rows="6" required><?php echo escape(post('message', '')); ?></textarea>
                     </div>
                     
                     <button type="submit" class="btn btn-primary">
@@ -46,12 +35,6 @@
                     <p><i class="fas fa-map-marker-alt"></i> 123 Rue Example, 75000 Paris</p>
                 </div>
                 
-                <div class="info-box">
-                    <h4>Horaires d'ouverture</h4>
-                    <p><strong>Lundi - Vendredi :</strong> 9h00 - 18h00</p>
-                    <p><strong>Samedi :</strong> 9h00 - 12h00</p>
-                    <p><strong>Dimanche :</strong> Fermé</p>
-                </div>
             </div>
         </div>
     </div>

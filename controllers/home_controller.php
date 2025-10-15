@@ -32,19 +32,17 @@ function home_contact() {
     ];
     
     if (is_post()) {
-        $first_name = clean_input(post('first_name'));
-        $last_name = clean_input(post('last_name'));
-        $email = clean_input(post('email'));
-        $message = clean_input(post('message'));
-        
+
+        $id = ($_SESSION['user_id']);
+        $email = get_email_of_user($id);
+        $messages = clean_input(post('messages'));
         // Validation simple
-        if (empty($first_name) ||empty($last_name) || empty($email) || empty($message)) {
+        if (empty($messages)) {
             set_flash('error', 'Tous les champs sont obligatoires.');
-        } elseif (!validate_email($email)) {
-            set_flash('error', 'Adresse email invalide.');
         } else {
+            create_message($email, $messages);
             // Ici vous pourriez envoyer l'email ou sauvegarder en base
-            set_flash('success', 'Votre message a été envoyé avec succès !');
+            set_flash('success', 'Votre message a été crée avec succès !');
             redirect('home/contact');
         }
     }
@@ -55,6 +53,7 @@ function home_contact() {
 
 function home_profile()
 {
+
     if (!is_logged_in()) { 
         return redirect('auth/login');
     }
@@ -72,11 +71,6 @@ function home_profile()
     }
 
     if (is_post()) {
-        $posted_token = (string)($_POST['csrf_token'] ?? '');
-        if (!verify_csrf_token($posted_token)) {
-            set_flash('error', "Jeton CSRF invalide ou expiré.");
-            return redirect('home/profile');
-        }
 
         $first_name = clean_input(post('first_name'));
         $last_name  = clean_input(post('last_name'));
@@ -107,7 +101,6 @@ function home_profile()
         if ($ok && $password !== '') {
             $ok = update_user_password($user_id, $password) && $ok; 
         }
-
         if ($ok) {
             $_SESSION['user_first_name'] = $first_name; 
             $_SESSION['user_last_name']  = $last_name;
@@ -128,13 +121,14 @@ function home_profile()
 }
 
 /**
- * Page test
+ * Page avis
  */
-function home_test() {
+function home_avis() {
     $data = [
-        'title' => 'Page test',
-        'message' => 'Bienvenue sur votre page test',
+        'title' => 'Page avis',
+        'message' => 'Bienvenue sur les avis des utilisateurs',
     ];
     
-    load_view_with_layout('home/test', $data);
+    
+    load_view_with_layout('home/avis', $data);
 } 
