@@ -4,14 +4,16 @@
 /**
  * Récupère un utilisateur par son email
  */
-function get_user_by_email($email) {
+function get_user_by_email($email)
+{
     $query = "SELECT * FROM users WHERE email = ? LIMIT 1";
     return db_select_one($query, [$email]);
 }
 /**
  * Récupère l'email d'un utilisateur par son ID
  */
-function get_email_of_user($id) {
+function get_email_of_user($id)
+{
     $query = "SELECT email FROM users WHERE id = ? LIMIT 1";
     $result = db_select_one($query, [$id]);
     return $result['email'] ?? null;
@@ -20,7 +22,8 @@ function get_email_of_user($id) {
 /**
  * Récupère un utilisateur par son ID
  */
-function get_user_by_id($id) {
+function get_user_by_id($id)
+{
     $query = "SELECT * FROM users WHERE id = ? LIMIT 1";
     return db_select_one($query, [$id]);
 }
@@ -28,21 +31,23 @@ function get_user_by_id($id) {
 /**
  * Crée un nouvel utilisateur
  */
-function create_user($first_name, $last_name, $email, $password) {
+function create_user($first_name, $last_name, $email, $password)
+{
     $hashed_password = hash_password($password);
     $query = "INSERT INTO users (first_name, last_name, email, password, role, created_at) VALUES (?, ?, ?, ?, role, NOW())";
-    
+
     if (db_execute($query, [$first_name, $last_name, $email, $hashed_password])) {
         return db_last_insert_id();
     }
-    
+
     return false;
 }
 
 /**
  * Met à jour un utilisateur
  */
-function update_user($id, $first_name, $last_name, $email) {
+function update_user($id, $first_name, $last_name, $email)
+{
     $query = "UPDATE users SET first_name = ?, last_name = ?, email = ?, updated_at = NOW() WHERE id = ?";
     return db_execute($query, [$first_name, $last_name, $email, $id]);
 }
@@ -50,7 +55,8 @@ function update_user($id, $first_name, $last_name, $email) {
 /**
  * Met à jour le mot de passe d'un utilisateur
  */
-function update_user_password($id, $password) {
+function update_user_password($id, $password)
+{
     $hashed_password = hash_password($password);
     $query = "UPDATE users SET password = ?, updated_at = NOW() WHERE id = ?";
     return db_execute($query, [$hashed_password, $id]);
@@ -58,7 +64,8 @@ function update_user_password($id, $password) {
 /**
  * met à jour la date et l'heure de déconnexion (par email)
  */
-function update_logout_time($email) {
+function update_logout_time($email)
+{
     $query = "UPDATE users SET logged_out_at = NOW() WHERE email = ?"; // NOW() : https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_now
     return db_execute($query, [$email]);
 }
@@ -66,7 +73,8 @@ function update_logout_time($email) {
 /**
  * Variante utile si on a l'id en session
  */
-function update_logout_time_by_user_id($user_id) {
+function update_logout_time_by_user_id($user_id)
+{
     $query = "UPDATE users SET logged_out_at = NOW() WHERE id = ?"; // NOW() : https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_now
     return db_execute($query, [$user_id]);
 }
@@ -74,8 +82,9 @@ function update_logout_time_by_user_id($user_id) {
 /**
  * récupère la date/heure de déconnexion
  */
-function fetch_logout_time($email) {
-    $query = "SELECT logged_out_at FROM users WHERE email = ?"; 
+function fetch_logout_time($email)
+{
+    $query = "SELECT logged_out_at FROM users WHERE email = ?";
     $result = db_select_one($query, [$email]);
     return $result['logged_out_at'] ?? null;
 }
@@ -83,7 +92,8 @@ function fetch_logout_time($email) {
 /**
  * Supprime un utilisateur
  */
-function delete_user($id) {
+function delete_user($id)
+{
     $query = "DELETE FROM users WHERE id = ?";
     return db_execute($query, [$id]);
 }
@@ -91,20 +101,22 @@ function delete_user($id) {
 /**
  * Récupère tous les utilisateurs
  */
-function get_all_users($limit = null, $offset = 0) {
+function get_all_users($limit = null, $offset = 0)
+{
     $query = "SELECT id, first_name, last_name, email, created_at FROM users ORDER BY created_at DESC";
-    
+
     if ($limit !== null) {
         $query .= " LIMIT $offset, $limit";
     }
-    
+
     return db_select($query);
 }
 
 /**
  * Compte le nombre total d'utilisateurs
  */
-function count_users() {
+function count_users()
+{
     $query = "SELECT COUNT(*) as total FROM users";
     $result = db_select_one($query);
     return $result['total'] ?? 0;
@@ -113,39 +125,43 @@ function count_users() {
 /**
  * Vérifie si un email existe déjà
  */
-function email_exists($email, $exclude_id = null) {
+function email_exists($email, $exclude_id = null)
+{
     $query = "SELECT COUNT(*) as count FROM users WHERE email = ?";
     $params = [$email];
-    
+
     if ($exclude_id) {
         $query .= " AND id != ?";
         $params[] = $exclude_id;
     }
-    
+
     $result = db_select_one($query, $params);
     return $result['count'] > 0;
-} 
+}
 /**
  * Paramètre timeout de session en secondes
  */
-function timeout_setting(){
-    $row = db_select_one("SELECT value_int FROM settings WHERE key_name = 'session_timeout' LIMIT 1"); 
+function timeout_setting()
+{
+    $row = db_select_one("SELECT value_int FROM settings WHERE key_name = 'session_timeout' LIMIT 1");
     return (int)($row['value_int'] ?? 0);
 }
 
 /**
  * Met à jour le paramètre timeout de session (POST['timeout'] attendu)
  */
-function timeout_setting_update(){
+function timeout_setting_update()
+{
     if (!isset($_POST['timeout'])) return false;
     $value = (int)$_POST['timeout'];
-    return db_execute("UPDATE settings SET value_int = ? WHERE key_name = 'session_timeout'", [$value]); 
+    return db_execute("UPDATE settings SET value_int = ? WHERE key_name = 'session_timeout'", [$value]);
 }
 
 /**
  * Vérifie expiration session et déconnecte si besoin
  */
-function check_and_logout_if_session_expired() {
+function check_and_logout_if_session_expired()
+{
     if (is_logged_in()) {
         $timeout = timeout_setting(); // en secondes
         if (isset($_SESSION['last_activity']) && $timeout > 0 && (time() - $_SESSION['last_activity'] > $timeout)) { // time() https://www.php.net/time
@@ -153,12 +169,11 @@ function check_and_logout_if_session_expired() {
             if ($user_id > 0) {
                 update_logout_time_by_user_id($user_id);
             }
-            session_destroy(); 
-            setcookie('logout_message', 'Votre session a expiré. Veuillez vous reconnecter.', time() + 5, '/'); 
-            header('Location: ' . url('auth/login')); 
+            session_destroy();
+            setcookie('logout_message', 'Votre session a expiré. Veuillez vous reconnecter.', time() + 5, '/');
+            header('Location: ' . url('auth/login'));
             exit(); // exit https://www.php.net/exit
         }
         $_SESSION['last_activity'] = time(); // time() https://www.php.net/time
     }
 }
-

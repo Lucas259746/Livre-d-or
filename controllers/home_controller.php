@@ -8,7 +8,7 @@ function home_index()
 {
     load_view_with_layout('home/index', [
         'title'   => 'Accueil',
-        'message' => 'Bienvenue sur votre application Online library !',
+        'message' => 'Bienvenue sur Mon Livre D\'or !',
     ]);
 }
 
@@ -17,6 +17,9 @@ function home_index()
  */
 function home_about()
 {
+    if (!is_logged_in()) {
+        return redirect('auth/login');
+    }
     load_view_with_layout('home/about', [
         'title'   => 'À propos',
         'content' => 'Cette application est un starter kit PHP MVC développé avec une approche procédurale.',
@@ -26,11 +29,15 @@ function home_about()
 /**
  * Page contact
  */
-function home_contact() {
+function home_contact()
+{
+    if (!is_logged_in()) {
+        return redirect('auth/login');
+    }
     $data = [
-        'title' => 'Contact'
+        'title' => 'Avis'
     ];
-    
+
     if (is_post()) {
 
         $id = ($_SESSION['user_id']);
@@ -46,15 +53,15 @@ function home_contact() {
             redirect('home/contact');
         }
     }
-    
+
     load_view_with_layout('home/contact', $data);
-} 
+}
 
 
 function home_profile()
 {
 
-    if (!is_logged_in()) { 
+    if (!is_logged_in()) {
         return redirect('auth/login');
     }
 
@@ -84,25 +91,25 @@ function home_profile()
             set_flash('error', "Adresse email invalide.");
             return redirect('home/profile');
         }
-        if (email_exists($email, $user_id)) { 
+        if (email_exists($email, $user_id)) {
             set_flash('error', "Cet email est déjà utilisé par un autre compte.");
             return redirect('home/profile');
         }
 
         if ($password !== '') {
             $re = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$.!%(+;)\*\/\-_{}#~$*%:!,<²°>ù^`|@\[\]*?&]).{8,}$/';
-            if (!preg_match($re, $password)) { 
+            if (!preg_match($re, $password)) {
                 set_flash('error', "Mot de passe non sécurisé ! Ajoute : 8+ caractères, 1 minuscule, 1 majuscule, 1 chiffre, 1 spécial.");
                 return redirect('home/profile');
             }
         }
 
-        $ok = update_user($user_id, $first_name, $last_name, $email); 
+        $ok = update_user($user_id, $first_name, $last_name, $email);
         if ($ok && $password !== '') {
-            $ok = update_user_password($user_id, $password) && $ok; 
+            $ok = update_user_password($user_id, $password) && $ok;
         }
         if ($ok) {
-            $_SESSION['user_first_name'] = $first_name; 
+            $_SESSION['user_first_name'] = $first_name;
             $_SESSION['user_last_name']  = $last_name;
             $_SESSION['user_email']      = $email;
             set_flash('success', 'Profil mis à jour avec succès.');
@@ -123,12 +130,13 @@ function home_profile()
 /**
  * Page avis
  */
-function home_avis() {
+function home_avis()
+{
     $data = [
         'title' => 'Page avis',
         'message' => 'Bienvenue sur les avis des utilisateurs',
     ];
-    
-    
+
+
     load_view_with_layout('home/avis', $data);
-} 
+}

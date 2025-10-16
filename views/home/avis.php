@@ -5,26 +5,26 @@
 </div>
 <section class="content">
     <div class="message-container">
-            <?php 
-            $messages = fetch_all_messages();
-            foreach ($messages as $msg): 
-            ?>
+        <?php
+        $messages = fetch_all_messages();
+        foreach ($messages as $msg):
+        ?>
             <div class="message-card">
 
                 <div class="message-header">
                     <?= htmlspecialchars($msg['email']) ?>
                 </div>
 
-                    <p class="message-content">
-                        <?= nl2br(htmlspecialchars_decode($msg['messages'])) ?>
-                    </p>
+                <p class="message-content">
+                    <?= nl2br(htmlspecialchars_decode($msg['messages'])) ?>
+                </p>
 
                 <div class="message-header">
                     <?= htmlspecialchars($msg['created_at']) ?>
                 </div>
             </div>
 
-            <?php endforeach; ?>
+        <?php endforeach; ?>
 
     </div>
-</section> 
+</section>

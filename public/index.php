@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Point d'entrée principal de l'application PHP MVC
  * 
@@ -29,4 +30,4 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Lancer le système de routing
-dispatch(); 
+dispatch();

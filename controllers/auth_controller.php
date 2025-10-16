@@ -4,21 +4,22 @@
 /**
  * Page de connexion
  */
-function auth_login() {
+function auth_login()
+{
 
     // Rediriger si déjà connecté
     if (is_logged_in()) {
         redirect('home');
     }
-    
+
     $data = [
         'title' => 'Connexion'
     ];
-    
+
     if (is_post()) {
         $email = clean_input(post('email'));
         $password = post('password');
-        
+
         if (empty($email) || empty($password)) {
             set_flash('error', 'Email et mot de passe obligatoires.');
         } else {
@@ -40,13 +41,13 @@ function auth_login() {
                         login_attempts_reset($email);
                         set_flash('success', 'Le compte a été débloqué. Vous pouvez réessayer de vous connecter.');
                     } else {
-                    $rt = ($current_time - $logout_timestamp) + 7200;
-                    $tr = ($timeout - $rt);
-                    set_flash('error','patienté un peu avant de recomencer.'.'il reste ' . $tr . ' seconde a attendre');
+                        $rt = ($current_time - $logout_timestamp) + 7200;
+                        $tr = ($timeout - $rt);
+                        set_flash('error', 'patienté un peu avant de recomencer.' . 'il reste ' . $tr . ' seconde a attendre');
                     }
                 } else {
 
-                    
+
                     if ($user && verify_password($password, $user['password'])) {
                         // Connexion réussie
                         $_SESSION['user_id'] = $user['id'];
@@ -54,7 +55,7 @@ function auth_login() {
                         $_SESSION['user_last_name'] = $user['last_name'];
                         $_SESSION['user_email'] = $user['email'];
                         $_SESSION['role'] = $user['role'];
-                
+
                         login_attempts_reset($email);
                         blocked_reset($email);
                         set_flash('success', 'Connexion réussie !');
@@ -66,7 +67,7 @@ function auth_login() {
                         $_SESSION['last_activity'] = time(); // Met à jour l'heure de la dernière activité
                         if ($_SESSION['login_attempts'] == max_login_attempts()) {
                             blocked_set($email);
-                            set_flash('error','Ce compte est bloqué pour 1 minute pour trop de mot de passe incorrect .');
+                            set_flash('error', 'Ce compte est bloqué pour 1 minute pour trop de mot de passe incorrect .');
                         } else {
                             $remaining_attempts = max_login_attempts() - $_SESSION['login_attempts'];
                             set_flash('error', 'Il vous reste ' . $remaining_attempts . ' tentative(s) avant le blocage du compte.');
@@ -75,7 +76,6 @@ function auth_login() {
                 }
             }
         }
-        
     }
     load_view_with_layout('auth/login', $data);
 }
@@ -132,6 +132,7 @@ function auth_register()
 /**
  * Déconnexion
  */
-function auth_logout() {
+function auth_logout()
+{
     logout();
-} 
+}

@@ -8,7 +8,7 @@ define('DB_CHARSET', 'utf8');
 
 // Configuration générale de l'application
 define('BASE_URL', 'http://localhost/livre_dor/public/');
-define('APP_NAME', 'PHP MVC Starter');
+define('APP_NAME', 'LIVRE D\'OR');
 define('APP_VERSION', '1.0.0');
 
 // Configuration des chemins
@@ -19,4 +19,4 @@ define('MODEL_PATH', ROOT_PATH . '/models');
 define('VIEW_PATH', ROOT_PATH . '/views');
 define('INCLUDE_PATH', ROOT_PATH . '/includes');
 define('CORE_PATH', ROOT_PATH . '/core');
-define('PUBLIC_PATH', ROOT_PATH . '/public'); 
+define('PUBLIC_PATH', ROOT_PATH . '/public');

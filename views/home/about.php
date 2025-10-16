@@ -10,7 +10,7 @@
             <div class="content-main">
                 <h2>À propos de cette application</h2>
                 <p><?php e($content); ?></p>
-                
+
                 <h3>Architecture MVC</h3>
                 <p>Cette application suit le pattern Model-View-Controller :</p>
                 <ul>
@@ -41,7 +41,7 @@
 ├── includes/       # Fonctions utilitaires
 └── public/         # Point d'entrée et assets</code></pre>
             </div>
-            
+
             <div class="sidebar">
                 <div class="info-box">
                     <h4>Informations système</h4>
@@ -52,4 +52,4 @@
             </div>
         </div>
     </div>
-</section> 
+</section>
