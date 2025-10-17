@@ -140,3 +140,11 @@ function home_avis()
 
     load_view_with_layout('home/avis', $data);
 }
+function home_projet_list()
+{
+    $data = [
+        'title' => 'CV et Projets',
+        'message' => 'Bienvenue sur la page des projets',
+    ];
+    load_view_with_layout('home/Projet_List', $data);
+}
